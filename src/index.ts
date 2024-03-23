@@ -12,8 +12,11 @@ fetch(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_v
 })
 
 
-const list: HTMLElement = document.querySelector('.pagination-container')
+const list: HTMLElement = document.querySelector('.pagination-list')
 function showPage(data:any) {
   const pagination = new Pagination(data.total_pages, data.page)
-  list.append(...pagination.element.children)
+  list.append(...Array.from(pagination.element.children))
+  pagination.element.parentNode.addEventListener('page-changed', (e)=>{
+    console.log(e)
+  })
 };

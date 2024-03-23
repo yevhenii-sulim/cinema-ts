@@ -55,7 +55,7 @@ export default class Pagination {
   
   render(page: number) {
     const listPage = this.pages(page)
-    
+
     const wrapper: HTMLUListElement = document.querySelector('.pagination-list')
     wrapper.insertAdjacentHTML('beforeend', listPage)
 
@@ -100,7 +100,7 @@ export default class Pagination {
     
     const carrentPage: HTMLElement = document.querySelector(`[data-page-index="${pageIndex}"]`)
     carrentPage.classList.add('active')
-    
+    this.dispatchEvent(pageIndex)
     this.page = pageIndex
   }
 
@@ -118,5 +118,11 @@ export default class Pagination {
       this.upDateRender(prevPage)
     }
     this.setPage(prevPage)
+  }
+  dispatchEvent(pageIndex) {
+    const customEvent = new CustomEvent('page-changed', {
+      detail: pageIndex,
+    })
+    this.element.dispatchEvent(customEvent)
   }
 }
