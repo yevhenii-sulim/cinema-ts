@@ -43,8 +43,6 @@ export default class Pagination {
   }
   
   pages(pages:number) {
-    const wrapper: HTMLUListElement = document.querySelector('.pagination-list')
-    this.element = wrapper
     const list: string[] = [];
     const listPage: number[] = [];
     for (let page = pages; page < this.showedCountPages() + pages; page++) {     
@@ -57,7 +55,11 @@ export default class Pagination {
   
   render(page: number) {
     const listPage = this.pages(page)
-    this.element.insertAdjacentHTML('beforeend', listPage)
+    
+    const wrapper: HTMLUListElement = document.querySelector('.pagination-list')
+    wrapper.insertAdjacentHTML('beforeend', listPage)
+
+    this.element = wrapper
   }
   
   upDateRender(page: number){
