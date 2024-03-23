@@ -1,0 +1,288 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  width: 320px;
+  margin: auto;
+}
+
+.header {
+  padding-top: 44px;
+  background-size: cover;
+  background-image: url('../images/head-home-320.png');
+  height: 230px;
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+.header-librery {
+  padding-top: 44px;
+  background-size: cover;
+  background-image: url('../images/head-library-320.png');
+  height: 230px;
+  padding-right: 12px;
+  padding-left: 12px;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.container-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+}
+
+.logo-link {
+  font-size: 12px;
+  color: #ffffff;
+}
+
+.logo-text {
+  color: #ffffff;
+  font-size: 30px;
+}
+
+.nav {
+  display: flex;
+  gap: 50px;
+}
+
+.nav-link {
+  position: relative;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.active-link::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #FF0000;
+  bottom: 0;
+  left: 0;
+}
+
+.search {
+  width: 394px;
+  margin: 48px auto 0;
+  position: relative;
+
+}
+
+.search-librery {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  padding-bottom: 30px;
+  align-items: center;
+  display: flex;
+  gap: 30px;
+}
+
+.input-librery {
+  border: none;
+  border: 0;
+  clip-path: inset(50%);
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+}
+
+.label-librery {
+  position: relative;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 2px #ffffff solid;
+}
+
+.input-librery:checked+label {
+  background-color: #FF6B01;
+}
+
+.search-input {
+  width: 100%;
+  border: none;
+  border-bottom: #ffffff solid 1px;
+  background-color: transparent;
+  outline: none;
+  color: #ffffff;
+  font-size: 24px;
+}
+
+.search-button {
+  background: transparent;
+  height: 100%;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  border: none;
+  right: 0;
+}
+
+/* main */
+.cinema-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.film {
+  list-style: none;
+}
+
+.link-film {
+  text-decoration: none;
+}
+
+.img-film {
+  width: auto;
+}
+
+.tytle-film {
+  color: #000000;
+  font-size: 24px;
+  width: 100%;
+}
+
+.ganre-film {
+  width: 100%;
+  color: #FF6B08;
+  font-size: 24px;
+
+}
+
+/* media */
+
+@media screen and (min-width:768px) {
+  .wrapper {
+    width: 768px;
+  }
+
+  .active-link::before {
+    bottom: 10px;
+  }
+
+  .header {
+    background-image: url('../images/head-home-768.png');
+    height: 230px;
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .header-librery {
+    background-image: url('../images/head-library-768.png');
+    height: 230px;
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .search {
+    width: 200px;
+  }
+
+  .container-nav {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (min-width:1280px) {
+  .wrapper {
+    width: 1280px;
+  }
+
+  .header {
+    background-image: url('../images/head-home-1280.png');
+    height: 216px;
+    padding-right: 42px;
+    padding-left: 42px;
+  }
+
+  .header-librery {
+    background-image: url('../images/head-library-1280.png');
+    height: 216px;
+    padding-right: 42px;
+    padding-left: 42px;
+  }
+
+  .search {
+    width: 350px;
+  }
+}
+
+.pagination-list {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.pagination-container {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.page {
+  border: #FF6B08 1px solid;
+}
+
+.prev,
+.next {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.prev:hover,
+.next:hover {
+  background-color: #FF6B08;
+}
+
+.pagination.active,
+.page:hover {
+  background-color: #FF6B08;
+}
+
+.pagination:active {
+  transform: scale(0.8);
+  transition: all 100ms ease;
+}
+
+.pagination button {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
