@@ -68,7 +68,6 @@ export default class Pagination {
     });
 
     this.element.addEventListener('click', (evt): void => {
-      let evtTarget: EventTarget = evt.target;
       const carrentPage: HTMLElement = (evt.target as HTMLElement).closest(
         '.page'
       );

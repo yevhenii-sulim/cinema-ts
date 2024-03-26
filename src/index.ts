@@ -27,7 +27,7 @@ fetch(
     showItem(data.results);
   });
 
-const cinemaList: HTMLElement = document.querySelector('.cinema-list');
+const cinemaList: HTMLElement = document.createElement('div');
 const list: HTMLElement = document.querySelector('.pagination-list');
 
 function showPage(data: fetchDataCinema): void {
@@ -37,5 +37,5 @@ function showPage(data: fetchDataCinema): void {
 
 function showItem(data: movie[]): void {
   const movies = new ItemList(data);
-  cinemaList.insertAdjacentHTML('beforeend', movies.render());
+  cinemaList.appendChild(movies.element);
 }

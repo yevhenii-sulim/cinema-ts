@@ -21,25 +21,35 @@ async function displayGanres(data: movie): Promise<string> {
     }
   );
   const dataGanres: listGanres = await ganresNumber.json();
-  const ganreMovie: string[] = dataGanres.genres
+  const ganreMovie: string = dataGanres.genres
     .filter(item => data.genre_ids.includes(item.id))
-    .map(({ name }) => name);
-  return ganreMovie.join(', ');
+    .map(({ name }) => name)
+    .join(', ');
+  return ganreMovie;
 }
 
 export default class ItemList {
   itemList: movie[];
-
+  element: Element;
   constructor(itemList: movie[] = []) {
     this.itemList = itemList;
+    this.render();
   }
-  render(): string {
-    return this.itemList
+
+  async renderCard(): Promise<string> {
+    return await this.itemList
       .map(async item => {
-        const genre: string = await displayGanres(item);
-        const movie = new Item(item, genre);
+        const movieGenre: string = await displayGanres(item);
+        const movie = new Item(item, movieGenre);
         return movie.element;
       })
       .join('');
+  }
+
+  async render(): Promise<void> {
+    const wrapper: HTMLElement = document.querySelector('.cinema-list');
+    const moviesList: string = await this.renderCard();
+    wrapper.innerHTML = moviesList;
+    this.element = wrapper;
   }
 }
