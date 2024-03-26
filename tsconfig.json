@@ -3,7 +3,7 @@
     "module": "CommonJS",
     "noImplicitAny": false,
     "removeComments": true,
-    "lib": ["DOM","ES2016"],
+    "lib": ["DOM", "ES2017"],
     "sourceMap": true,
     "outDir": "./dist"
   },

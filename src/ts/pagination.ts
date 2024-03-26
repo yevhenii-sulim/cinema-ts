@@ -19,18 +19,18 @@ export default class Pagination {
     this.addEventListeners();
   }
 
-  getTeamplateList(page: number) {
+  getTeamplateList(page: number): string {
     const active: string = page === this.page ? 'active' : '';
     return `<li class="pagination page ${active}" data-page-index="${page}"><button>${page}</button></li>`;
   }
 
-  showedCountPages() {
+  showedCountPages(): number {
     const counterPages: number =
       this.totalPages < this.showedPage ? this.totalPages : this.showedPage;
     return counterPages;
   }
 
-  pages(pages: number) {
+  pages(pages: number): string {
     const list: string[] = [];
     const listPage: number[] = [];
     for (let page = pages; page < this.showedCountPages() + pages; page++) {
@@ -41,7 +41,7 @@ export default class Pagination {
     return list.join('');
   }
 
-  render(page: number) {
+  render(page: number): void {
     const listPage = this.pages(page);
 
     const wrapper: HTMLUListElement =
@@ -51,25 +51,27 @@ export default class Pagination {
     this.element = wrapper;
   }
 
-  upDateRender(page: number) {
+  upDateRender(page: number): void {
     if (page > this.totalPages || page < 1) return;
     this.element.innerHTML = this.pages(page);
   }
 
-  addEventListeners() {
+  addEventListeners(): void {
     const next: HTMLElement = this.element.parentNode.querySelector('.next');
     const prev: HTMLElement = this.element.parentNode.querySelector('.prev');
 
-    next.addEventListener('click', () => {
+    next.addEventListener('click', (): void => {
       this.nextPage();
     });
-    prev.addEventListener('click', () => {
+    prev.addEventListener('click', (): void => {
       this.prevPage();
     });
 
-    this.element.addEventListener('click', evt => {
-      console.log(evt.target);
-      const carrentPage: HTMLElement = evt.target.closest('.page');
+    this.element.addEventListener('click', (evt): void => {
+      let evtTarget: EventTarget = evt.target;
+      const carrentPage: HTMLElement = (evt.target as HTMLElement).closest(
+        '.page'
+      );
       if (!carrentPage) {
         return;
       }
@@ -79,7 +81,7 @@ export default class Pagination {
     });
   }
 
-  setPage(pageIndex: number) {
+  setPage(pageIndex: number): void {
     if (pageIndex === this.page) return;
     if (pageIndex > this.totalPages || pageIndex < 1) return;
     const activePage: HTMLElement = document.querySelector('.page.active');
@@ -92,11 +94,11 @@ export default class Pagination {
       `[data-page-index="${pageIndex}"]`
     );
     carrentPage.classList.add('active');
-    this.dispatchEvent(pageIndex);
+    // this.dispatchEvent(pageIndex);
     this.page = pageIndex;
   }
 
-  nextPage() {
+  nextPage(): void {
     const nextPage: number = this.page + 1;
     if (nextPage > Math.max(...this.listPage)) {
       this.upDateRender(nextPage - (this.showedPage - 1));
@@ -104,17 +106,17 @@ export default class Pagination {
     this.setPage(nextPage);
   }
 
-  prevPage() {
+  prevPage(): void {
     const prevPage: number = this.page - 1;
     if (prevPage < Math.min(...this.listPage)) {
       this.upDateRender(prevPage);
     }
     this.setPage(prevPage);
   }
-  dispatchEvent(pageIndex) {
-    const customEvent = new CustomEvent('page-changed', {
-      detail: pageIndex,
-    });
-    this.element.dispatchEvent(customEvent);
-  }
+  // dispatchEvent(pageIndex) {
+  //   const customEvent = new CustomEvent('page-changed', {
+  //     detail: pageIndex,
+  //   });
+  //   this.element.dispatchEvent(customEvent);
+  // }
 }
