@@ -1,16 +1,18 @@
+import axios, { AxiosResponse } from 'axios';
 import Item from './item';
 import { movie } from './item';
+
+interface listGanres {
+  genres: itemGanre[];
+}
 
 interface itemGanre {
   id: number;
   name: string;
 }
-
-interface listGanres {
-  genres: itemGanre[];
-}
-async function displayGanres(data: movie): Promise<string> {
-  const ganresNumber: Response = await fetch(
+// AxiosResponse<itemGanre>
+async function displayGanres(): Promise<listGanres> {
+  const data: any = axios.get(
     'https://api.themoviedb.org/3/genre/movie/list?language=en',
     {
       headers: {
@@ -20,12 +22,8 @@ async function displayGanres(data: movie): Promise<string> {
       },
     }
   );
-  const dataGanres: listGanres = await ganresNumber.json();
-  const ganreMovie: string = dataGanres.genres
-    .filter(item => data.genre_ids.includes(item.id))
-    .map(({ name }) => name)
-    .join(', ');
-  return ganreMovie;
+  const dataGenres = await data;
+  return dataGenres.data;
 }
 
 export default class ItemList {
@@ -37,10 +35,15 @@ export default class ItemList {
   }
 
   async renderCard(): Promise<string> {
-    return await this.itemList
+    return this.itemList
       .map(async item => {
-        const movieGenre: string = await displayGanres(item);
-        const movie = new Item(item, movieGenre);
+        const movieGenre: listGanres = await displayGanres();
+        const ganreMovie: string = movieGenre.genres
+          .filter(genre => item.genre_ids.includes(genre.id))
+          .map(({ name }) => name)
+          .join(', ');
+        const movie = new Item(item, ganreMovie);
+        console.log(movie.element);
         return movie.element;
       })
       .join('');

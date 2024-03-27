@@ -37,5 +37,5 @@ function showPage(data: fetchDataCinema): void {
 
 function showItem(data: movie[]): void {
   const movies = new ItemList(data);
-  cinemaList.appendChild(movies.element);
+  // cinemaList.appendChild(movies.element);
 }
