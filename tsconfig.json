@@ -3,7 +3,7 @@
     "module": "CommonJS",
     "noImplicitAny": false,
     "removeComments": true,
-    "lib": ["DOM", "ES2017"],
+    "lib": ["DOM", "ES2020"],
     "sourceMap": true,
     "outDir": "./dist"
   },

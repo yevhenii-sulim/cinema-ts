@@ -10,9 +10,12 @@ interface itemGanre {
   id: number;
   name: string;
 }
-// AxiosResponse<itemGanre>
+interface List {
+  status: string;
+  value: HTMLElement;
+}
 async function displayGanres(): Promise<listGanres> {
-  const data: any = axios.get(
+  const data: AxiosResponse<listGanres> = await axios.get(
     'https://api.themoviedb.org/3/genre/movie/list?language=en',
     {
       headers: {
@@ -22,8 +25,7 @@ async function displayGanres(): Promise<listGanres> {
       },
     }
   );
-  const dataGenres = await data;
-  return dataGenres.data;
+  return data.data;
 }
 
 export default class ItemList {
@@ -31,28 +33,20 @@ export default class ItemList {
   element: Element;
   constructor(itemList: movie[] = []) {
     this.itemList = itemList;
-    this.render();
+    this.renderCard();
   }
 
-  async renderCard(): Promise<string> {
-    return this.itemList
-      .map(async item => {
-        const movieGenre: listGanres = await displayGanres();
-        const ganreMovie: string = movieGenre.genres
-          .filter(genre => item.genre_ids.includes(genre.id))
-          .map(({ name }) => name)
-          .join(', ');
-        const movie = new Item(item, ganreMovie);
-        console.log(movie.element);
-        return movie.element;
-      })
-      .join('');
-  }
-
-  async render(): Promise<void> {
-    const wrapper: HTMLElement = document.createElement('div');
-    const moviesList: string = await this.renderCard();
-    wrapper.innerHTML = moviesList;
+  async renderCard(): Promise<void> {
+    const wrapper: HTMLElement = document.createElement('ul');
     this.element = wrapper;
+    this.itemList.map(async item => {
+      const movieGenre: listGanres = await displayGanres();
+      const ganreMovie: string = movieGenre.genres
+        .filter(genre => item.genre_ids.includes(genre.id))
+        .map(({ name }) => name)
+        .join(', ');
+      const movie = new Item(item, ganreMovie);
+      wrapper.appendChild(movie.element);
+    });
   }
 }

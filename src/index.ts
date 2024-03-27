@@ -1,3 +1,4 @@
+import axios, { AxiosResponse } from 'axios';
 import Pagination from './ts/pagination';
 import ItemList from './ts/itemList';
 import { movie } from './ts/item';
@@ -10,6 +11,23 @@ interface fetchDataCinema {
   total_pages: number;
   total_results: number;
 }
+async function fetchData(page: number): Promise<fetchDataCinema> {
+  const data: Response = await fetch(
+    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`,
+    {
+      headers: {
+        Authorization:
+          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlZjU0YzMxNmYxNjZiMmE1OTEzNzkxZThiM2Y2M2E0YSIsInN1YiI6IjY0NzBkZmZhYzVhZGE1MDBjMWEzNzhmMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.fljmrABHLVGUf2e0aWKvdHeTeR0ruZNkP26DhsQLuYM',
+        accept: 'application/json',
+      },
+    }
+  );
+  return data.json();
+}
+
+fetchData(1)
+  .then(data => data.json())
+  .then(data => console.log(data));
 
 fetch(
   `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`,
@@ -37,5 +55,8 @@ function showPage(data: fetchDataCinema): void {
 
 function showItem(data: movie[]): void {
   const movies = new ItemList(data);
-  cinemaList.append(...Array.from(movies.element.children));
+  cinemaList.append(movies.element);
+}
+class GetMovieList {
+  constructor() {}
 }

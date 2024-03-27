@@ -27,7 +27,6 @@
   padding-left: 12px;
   display: flex;
   flex-direction: column;
-
 }
 
 .container-nav {
@@ -65,11 +64,11 @@
 }
 
 .active-link::before {
-  content: "";
+  content: '';
   position: absolute;
   width: 100%;
   height: 2px;
-  background-color: #FF0000;
+  background-color: #ff0000;
   bottom: 0;
   left: 0;
 }
@@ -78,7 +77,6 @@
   width: 394px;
   margin: 48px auto 0;
   position: relative;
-
 }
 
 .search-librery {
@@ -113,8 +111,8 @@
   border: 2px #ffffff solid;
 }
 
-.input-librery:checked+label {
-  background-color: #FF6B01;
+.input-librery:checked + label {
+  background-color: #ff6b01;
 }
 
 .search-input {
@@ -138,12 +136,16 @@
 }
 
 /* main */
-.cinema-list {
-  display: flex;
-  flex-wrap: wrap;
+.main {
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.cinema-list ul {
+  display: grid;
+  grid-template-columns: 1fr;
   justify-content: center;
   gap: 30px;
-  margin-top: 60px;
   margin-bottom: 60px;
 }
 
@@ -156,7 +158,8 @@
 }
 
 .img-film {
-  width: auto;
+  width: 100%;
+  height: auto;
 }
 
 .tytle-film {
@@ -167,16 +170,20 @@
 
 .ganre-film {
   width: 100%;
-  color: #FF6B08;
+  color: #ff6b08;
   font-size: 24px;
-
 }
 
 /* media */
 
-@media screen and (min-width:768px) {
+@media screen and (min-width: 768px) {
   .wrapper {
     width: 768px;
+  }
+
+  .pagination {
+    width: 50px;
+    height: 50px;
   }
 
   .active-link::before {
@@ -205,11 +212,18 @@
     flex-direction: row;
     justify-content: space-between;
   }
+  .cinema-list ul {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
-@media screen and (min-width:1280px) {
+@media screen and (min-width: 1280px) {
   .wrapper {
     width: 1280px;
+  }
+
+  .cinema-list ul {
+    grid-template-columns: 1fr 1fr 1fr;
   }
 
   .header {
@@ -232,7 +246,8 @@
 }
 
 .pagination-list {
-  display: flex;
+  display: grid;
+  grid-template: 1 / repeat(5, 30px);
   gap: 10px;
   justify-content: center;
 }
@@ -247,14 +262,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  height: 30px;
   overflow: hidden;
   border-radius: 50%;
 }
 
 .page {
-  border: #FF6B08 1px solid;
+  border: #ff6b08 1px solid;
 }
 
 .prev,
@@ -266,12 +280,12 @@
 
 .prev:hover,
 .next:hover {
-  background-color: #FF6B08;
+  background-color: #ff6b08;
 }
 
 .pagination.active,
 .page:hover {
-  background-color: #FF6B08;
+  background-color: #ff6b08;
 }
 
 .pagination:active {

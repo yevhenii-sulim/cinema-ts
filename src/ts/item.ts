@@ -36,9 +36,13 @@ export default class Item {
     return `
         <li class="film">
         <a href="#" class="link-film">
-          <img src="https://image.tmdb.org/t/p/w500${this.product.poster_path}" alt="film" class="img-film">
+          <img src="https://image.tmdb.org/t/p/w500${
+            this.product.poster_path
+          }" alt="film" class="img-film">
           <h2 class="tytle-film">${this.product.title}</h2>
-          <p class="ganre-film">${this.genre}t</p>
+          <p class="ganre-film">${
+            this.genre
+          } | ${this.product.release_date.slice(0, 4)}</p>
         </a>
       </li>
     `;
