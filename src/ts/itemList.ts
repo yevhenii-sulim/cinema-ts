@@ -50,7 +50,7 @@ export default class ItemList {
   }
 
   async render(): Promise<void> {
-    const wrapper: HTMLElement = document.querySelector('.cinema-list');
+    const wrapper: HTMLElement = document.createElement('div');
     const moviesList: string = await this.renderCard();
     wrapper.innerHTML = moviesList;
     this.element = wrapper;
