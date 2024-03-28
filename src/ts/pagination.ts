@@ -1,32 +1,59 @@
 interface Pag {
-  totalPages?: number;
+  total_pages?: number;
   page?: number;
   showedPage?: number;
 }
 
 export default class Pagination {
-  totalPages?: number;
+  total_pages?: number;
   page?: number;
   showedPage?: number;
   listPage?: number[];
-  element?: HTMLUListElement;
+  element?: HTMLElement;
 
-  constructor({ totalPages, page = 1, showedPage = 5 }: Pag = {}) {
-    this.totalPages = totalPages;
+  constructor({ total_pages, page = 1, showedPage = 5 }: Pag = {}) {
+    this.total_pages = total_pages;
     this.page = page;
     this.showedPage = showedPage;
     this.render(this.page);
     this.addEventListeners();
   }
 
+  getTeamplate(pages: number): string | null {
+    const prev: string | null =
+      this.total_pages > this.showedPage
+        ? `<button class="prev">prev</button>`
+        : null;
+    const next: string | null =
+      this.total_pages > this.showedPage
+        ? `<button class="next">next</button>`
+        : null;
+
+    if (this.showedCountPages()) {
+      return `
+        ${prev}
+        <ul class="pagination-list">
+          ${this.pages(pages)}
+        </ul>
+        ${next}
+      `;
+    } else {
+      return null;
+    }
+  }
+
   getTeamplateList(page: number): string {
     const active: string = page === this.page ? 'active' : '';
-    return `<li class="pagination page ${active}" data-page-index="${page}"><button>${page}</button></li>`;
+    return `
+      <li class="pagination page ${active}" data-page-index="${page}">
+        <button>${page}</button>
+      </li>
+    `;
   }
 
   showedCountPages(): number {
     const counterPages: number =
-      this.totalPages < this.showedPage ? this.totalPages : this.showedPage;
+      this.total_pages < this.showedPage ? this.total_pages : this.showedPage;
     return counterPages;
   }
 
@@ -42,36 +69,36 @@ export default class Pagination {
   }
 
   render(page: number): void {
-    const listPage = this.pages(page);
-
-    const wrapper: HTMLUListElement =
-      document.querySelector('.pagination-list');
-    wrapper.insertAdjacentHTML('beforeend', listPage);
-
+    const wrapper: HTMLElement = document.createElement('div');
+    wrapper.innerHTML = this.getTeamplate(page);
     this.element = wrapper;
   }
 
   upDateRender(page: number): void {
-    if (page > this.totalPages || page < 1) return;
-    this.element.innerHTML = this.pages(page);
+    if (page > this.total_pages || page < 1) return;
+    this.element.innerHTML = this.getTeamplate(page);
   }
 
   addEventListeners(): void {
-    const next: HTMLElement = this.element.parentNode.querySelector('.next');
-    const prev: HTMLElement = this.element.parentNode.querySelector('.prev');
+    const next: HTMLElement = this.element.querySelector('.next');
+    const prev: HTMLElement = this.element.querySelector('.prev');
+    const pagination: HTMLElement = this.element.querySelector('.pagination');
 
     next.addEventListener('click', (): void => {
       this.nextPage();
     });
+
     prev.addEventListener('click', (): void => {
       this.prevPage();
     });
 
-    this.element.addEventListener('click', (evt): void => {
+    pagination.addEventListener('click', (evt): void => {
       const carrentPage: HTMLElement = (evt.target as HTMLElement).closest(
         '.page'
       );
-      if (!carrentPage) {
+      if (!carrentPage) return;
+
+      if (carrentPage === this.element.querySelector('.pagination.active')) {
         return;
       }
       const pageIndex: number = parseInt(carrentPage.dataset.pageIndex);
@@ -82,9 +109,8 @@ export default class Pagination {
 
   setPage(pageIndex: number): void {
     if (pageIndex === this.page) return;
-    if (pageIndex > this.totalPages || pageIndex < 1) return;
+    if (pageIndex > this.total_pages || pageIndex < 1) return;
     const activePage: HTMLElement = document.querySelector('.page.active');
-
     if (activePage) {
       activePage.classList.remove('active');
     }
@@ -113,7 +139,7 @@ export default class Pagination {
     this.setPage(prevPage);
   }
   dispatchEvent(pageIndex: number) {
-    const customEvent: Event = new CustomEvent('page-changed', {
+    const customEvent: CustomEvent = new CustomEvent('page-changed', {
       detail: pageIndex,
     });
     this.element.dispatchEvent(customEvent);

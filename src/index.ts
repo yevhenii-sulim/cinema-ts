@@ -10,8 +10,8 @@ interface fetchDataCinema {
   total_results: number;
 }
 
-async function fetchData(pageIndex: number): Promise<any> {
-  const dataMovies: AxiosResponse<any> = await axios.get(
+async function fetchData(pageIndex: number): Promise<fetchDataCinema> {
+  const dataMovies: AxiosResponse<fetchDataCinema> = await axios.get(
     `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${pageIndex}&sort_by=popularity.desc`,
     {
       headers: {
@@ -21,29 +21,32 @@ async function fetchData(pageIndex: number): Promise<any> {
       },
     }
   );
-
-  return dataMovies;
+  return dataMovies.data;
 }
 
-export default class GetMovieList {
-  pageIndex: number;
-  constructor() {
-    this.pageIndex = 1;
-  }
-  showItem(data: movie[]): void {
-    const cinemaList: HTMLElement = document.querySelector('.cinema-list');
-    const movies = new ItemList(data);
-    cinemaList.append(movies.element);
-  }
-
-  showPage(data: fetchDataCinema): void {
-    const list: HTMLElement = document.querySelector('.pagination-list');
-    const pagination = new Pagination(data);
-    fetchData(1).then(data => console.log(data));
-    list.append(...Array.from(pagination.element.children));
-    // list.addEventListener('page-changed', evt => {
-    //   const page = evt as Event;
-    //   console.log(page);
-    // });
-  }
+const list: HTMLElement = document.querySelector('.pagination-container');
+const cinemaList: HTMLElement = document.querySelector('.cinema-list');
+async function initExempl(): Promise<void> {
+  const dataMovies: fetchDataCinema = await fetchData(1);
+  showItem(dataMovies.results);
+  showPage(dataMovies);
 }
+initExempl();
+function showPage(data: fetchDataCinema): void {
+  const pagination = new Pagination(data);
+  console.log(pagination.element.children);
+  list.append(...Array.from(pagination.element.children));
+  console.log(data);
+}
+
+function showItem(data: movie[]): void {
+  const movies = new ItemList(data);
+  cinemaList.append(movies.element);
+}
+
+// function initEventListener() {
+// list.addEventListener('page-changed', evt => {
+//   const page: number = (evt as CustomEvent).detail;
+//   console.log(page);
+// });
+// }
