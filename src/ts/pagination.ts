@@ -93,7 +93,7 @@ export default class Pagination {
       `[data-page-index="${pageIndex}"]`
     );
     carrentPage.classList.add('active');
-    // this.dispatchEvent(pageIndex);
+    this.dispatchEvent(pageIndex);
     this.page = pageIndex;
   }
 
@@ -112,10 +112,10 @@ export default class Pagination {
     }
     this.setPage(prevPage);
   }
-  // dispatchEvent(pageIndex) {
-  //   const customEvent = new CustomEvent('page-changed', {
-  //     detail: pageIndex,
-  //   });
-  //   this.element.dispatchEvent(customEvent);
-  // }
+  dispatchEvent(pageIndex: number) {
+    const customEvent: Event = new CustomEvent('page-changed', {
+      detail: pageIndex,
+    });
+    this.element.dispatchEvent(customEvent);
+  }
 }

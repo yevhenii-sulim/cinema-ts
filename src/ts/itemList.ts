@@ -10,10 +10,7 @@ interface itemGanre {
   id: number;
   name: string;
 }
-interface List {
-  status: string;
-  value: HTMLElement;
-}
+
 async function displayGanres(): Promise<listGanres> {
   const data: AxiosResponse<listGanres> = await axios.get(
     'https://api.themoviedb.org/3/genre/movie/list?language=en',

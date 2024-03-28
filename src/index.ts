@@ -1,9 +1,7 @@
-import axios, { AxiosResponse } from 'axios';
 import Pagination from './ts/pagination';
 import ItemList from './ts/itemList';
 import { movie } from './ts/item';
-const key: string = 'ef54c316f166b2a5913791e8b3f63a4a';
-const page: number = 1;
+import axios, { AxiosResponse } from 'axios';
 
 interface fetchDataCinema {
   page: number;
@@ -11,9 +9,10 @@ interface fetchDataCinema {
   total_pages: number;
   total_results: number;
 }
-async function fetchData(page: number): Promise<fetchDataCinema> {
-  const data: Response = await fetch(
-    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`,
+
+async function fetchData(pageIndex: number): Promise<any> {
+  const dataMovies: AxiosResponse<any> = await axios.get(
+    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${pageIndex}&sort_by=popularity.desc`,
     {
       headers: {
         Authorization:
@@ -22,41 +21,29 @@ async function fetchData(page: number): Promise<fetchDataCinema> {
       },
     }
   );
-  return data.json();
+
+  return dataMovies;
 }
 
-fetchData(1)
-  .then(data => data.json())
-  .then(data => console.log(data));
-
-fetch(
-  `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`,
-  {
-    headers: {
-      Authorization:
-        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlZjU0YzMxNmYxNjZiMmE1OTEzNzkxZThiM2Y2M2E0YSIsInN1YiI6IjY0NzBkZmZhYzVhZGE1MDBjMWEzNzhmMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.fljmrABHLVGUf2e0aWKvdHeTeR0ruZNkP26DhsQLuYM',
-      accept: 'application/json',
-    },
+export default class GetMovieList {
+  pageIndex: number;
+  constructor() {
+    this.pageIndex = 1;
   }
-)
-  .then((data): Promise<fetchDataCinema> => data.json())
-  .then((data): void => {
-    showPage(data);
-    showItem(data.results);
-  });
+  showItem(data: movie[]): void {
+    const cinemaList: HTMLElement = document.querySelector('.cinema-list');
+    const movies = new ItemList(data);
+    cinemaList.append(movies.element);
+  }
 
-const cinemaList: HTMLElement = document.querySelector('.cinema-list');
-const list: HTMLElement = document.querySelector('.pagination-list');
-
-function showPage(data: fetchDataCinema): void {
-  const pagination = new Pagination(data);
-  list.append(...Array.from(pagination.element.children));
-}
-
-function showItem(data: movie[]): void {
-  const movies = new ItemList(data);
-  cinemaList.append(movies.element);
-}
-class GetMovieList {
-  constructor() {}
+  showPage(data: fetchDataCinema): void {
+    const list: HTMLElement = document.querySelector('.pagination-list');
+    const pagination = new Pagination(data);
+    fetchData(1).then(data => console.log(data));
+    list.append(...Array.from(pagination.element.children));
+    // list.addEventListener('page-changed', evt => {
+    //   const page = evt as Event;
+    //   console.log(page);
+    // });
+  }
 }
