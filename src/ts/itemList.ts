@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import Item from './item';
-import { movie } from './item';
+import { fetchDataCinema } from './interface';
 
 interface listGanres {
   genres: itemGanre[];
@@ -26,9 +26,9 @@ async function displayGanres(): Promise<listGanres> {
 }
 
 export default class ItemList {
-  itemList: movie[];
+  itemList: fetchDataCinema;
   element: Element;
-  constructor(itemList: movie[] = []) {
+  constructor(itemList: fetchDataCinema = {}) {
     this.itemList = itemList;
     this.renderCard();
   }
@@ -36,13 +36,15 @@ export default class ItemList {
   async renderCard(): Promise<void> {
     const wrapper: HTMLElement = document.createElement('ul');
     this.element = wrapper;
-    this.itemList.map(async item => {
-      const movieGenre: listGanres = await displayGanres();
-      const ganreMovie: string = movieGenre.genres
+    const movieGenre: listGanres = await displayGanres();
+    const genreMovieList: itemGanre[] = movieGenre.genres;
+    console.log(this.itemList);
+    this.itemList.results?.map(async item => {
+      const genreMovie: string = genreMovieList
         .filter(genre => item.genre_ids.includes(genre.id))
         .map(({ name }) => name)
         .join(', ');
-      const movie = new Item(item, ganreMovie);
+      const movie = new Item(item, genreMovie);
       wrapper.appendChild(movie.element);
     });
   }

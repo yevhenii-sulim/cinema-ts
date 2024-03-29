@@ -16,17 +16,17 @@ export default class Pagination {
     this.page = page;
     this.showedPage = showedPage;
     this.render(this.page);
-    this.addEventListeners();
+    // this.addEventListeners();
   }
 
   getTeamplate(pages: number): string | null {
     const prev: string | null =
       this.total_pages > this.showedPage
-        ? `<button class="prev">prev</button>`
+        ? `<button type="button" class="prev">prev</button>`
         : null;
     const next: string | null =
       this.total_pages > this.showedPage
-        ? `<button class="next">next</button>`
+        ? `<button type="button" class="next">next</button>`
         : null;
 
     if (this.showedCountPages()) {
@@ -46,7 +46,7 @@ export default class Pagination {
     const active: string = page === this.page ? 'active' : '';
     return `
       <li class="pagination page ${active}" data-page-index="${page}">
-        <button>${page}</button>
+        <button type="button">${page}</button>
       </li>
     `;
   }
@@ -71,19 +71,19 @@ export default class Pagination {
   render(page: number): void {
     const wrapper: HTMLElement = document.createElement('div');
     wrapper.innerHTML = this.getTeamplate(page);
+    console.log(this.total_pages);
     this.element = wrapper;
   }
 
   upDateRender(page: number): void {
     if (page > this.total_pages || page < 1) return;
-    this.element.innerHTML = this.getTeamplate(page);
+    this.element.querySelector('pagination-list').innerHTML = this.pages(page);
   }
 
   addEventListeners(): void {
     const next: HTMLElement = this.element.querySelector('.next');
     const prev: HTMLElement = this.element.querySelector('.prev');
     const pagination: HTMLElement = this.element.querySelector('.pagination');
-
     next.addEventListener('click', (): void => {
       this.nextPage();
     });
@@ -91,8 +91,8 @@ export default class Pagination {
     prev.addEventListener('click', (): void => {
       this.prevPage();
     });
-
-    pagination.addEventListener('click', (evt): void => {
+    console.log(pagination, 'zxcz');
+    this.element.addEventListener('click', (evt): void => {
       const carrentPage: HTMLElement = (evt.target as HTMLElement).closest(
         '.page'
       );
